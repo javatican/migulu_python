@@ -26,21 +26,26 @@ class Card:
         self.suit= suit
         # 1 TO 13,  14 FOR JOKER, O FOR COVER CARD
         self.number=number
+        self.rect = None
         
     def get_image_rect(self, ratio):
-        if self.id>=1 and self.id<=52:
-            x=(self.number-1)*Card.CARD_WIDTH
-            y=(self.suit-1)*Card.CARD_HEIGHT
-        elif self.id==0:
-            x=2*Card.CARD_WIDTH
-            y=4*Card.CARD_HEIGHT
-        elif self.id==53:
-            x=0
-            y=4*Card.CARD_HEIGHT
-        elif self.id==54:
-            x=Card.CARD_WIDTH
-            y=4*Card.CARD_HEIGHT
-        return (x*ratio,y*ratio,Card.CARD_WIDTH*ratio,Card.CARD_HEIGHT*ratio)
+        if self.rect==None:
+            if self.id>=1 and self.id<=52:
+                x=(self.number-1)*Card.CARD_WIDTH
+                y=(self.suit-1)*Card.CARD_HEIGHT
+            elif self.id==0:
+                x=2*Card.CARD_WIDTH
+                y=4*Card.CARD_HEIGHT
+            elif self.id==53:
+                x=0
+                y=4*Card.CARD_HEIGHT
+            elif self.id==54:
+                x=Card.CARD_WIDTH
+                y=4*Card.CARD_HEIGHT
+            else:
+                print("Error when calling get_image_rect()")
+            self.rect =  (x,y,Card.CARD_WIDTH,Card.CARD_HEIGHT)
+        return (self.rect[0]*ratio, self.rect[1]*ratio, self.rect[2]*ratio, self.rect[3]*ratio)
     def __str__(self):
         return "[%d, %d, %d]" % (self.id, self.suit, self.number)
     def __repr__(self):

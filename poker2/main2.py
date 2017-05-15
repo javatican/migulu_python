@@ -6,10 +6,10 @@ from my_scenes import SceneHome
  
 def main():
     pygame.display.init()
-    dir = Director()
-    scene = SceneHome(dir)
-    dir.change_scene(scene)
-    dir.loop()
+    dr = Director()
+    scene = SceneHome(dr)
+    dr.change_scene(scene)
+    dr.loop()
  
 if __name__ == '__main__':
     main()
