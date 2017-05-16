@@ -31,6 +31,7 @@ class SceneHome(Scene):
         self.cover_card_rect = self.cover_card.get_image_rect(SceneHome.RATIO)
         # 
         self.sli = self.cards[1:53]
+        # no shuffle card
         #random.shuffle(self.sli)
         #
         white = (255,255,255)
@@ -126,7 +127,8 @@ class SceneGame(Scene):
  
     def on_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            pos = pygame.mouse.get_pos()
+            #pos = pygame.mouse.get_pos()
+            pos = event.pos
             i = pos[1]//SceneHome.CARD_HEIGHT
             j = pos[0]//SceneHome.CARD_WIDTH
             if i>=0 and i<4 and j>=0 and j<13:
@@ -139,35 +141,19 @@ class SceneGame(Scene):
                         self.card1_indices=(i,j)
                         to_show=True
                     elif self.card2==None:
-                        self.card2 = card
-                        self.card2_indices=(i,j)
-                        to_show=True
+                        # check if a card been clicked twice
+                        if card.id!=self.card1.id:
+                            pygame.event.set_blocked(pygame.MOUSEBUTTONDOWN)
+                            self.card2 = card
+                            self.card2_indices=(i,j)
+                            to_show=True
                     if to_show:
                         pos_x=self.dsp_origin_x+j*SceneHome.CARD_WIDTH
                         pos_y=self.dsp_origin_y+i*SceneHome.CARD_HEIGHT
                         rect = card.get_image_rect(SceneHome.RATIO)
                         self.director.screen.blit(self.img, (pos_x, pos_y), rect)
-                    
-                            
-            
-        
+
     def on_draw(self, screen):
-        # s = self.counter//52
-        # p = self.counter%52
-        # q = p//13
-        # r = p%13
-        # if s%2==0:
-        #     rect = self.cover_card_rect
-        # else:
-        #     card = self.sli[p]
-        #     rect = card.get_image_rect(SceneHome.RATIO)
-            
-        # pos_x=self.dsp_origin_x+r*SceneHome.CARD_WIDTH
-        # pos_y=self.dsp_origin_y+q*SceneHome.CARD_HEIGHT
-        # screen.blit(self.img, (pos_x, pos_y), rect)
-        
-        # self.counter+=1
-        
         if self.card1 and self.card2 :
             pygame.display.flip()
             pygame.time.wait(2000)
@@ -197,3 +183,4 @@ class SceneGame(Scene):
             self.card2 = None 
             self.card1_indices=None
             self.card2_indices=None
+            pygame.event.set_allowed(pygame.MOUSEBUTTONDOWN)
