@@ -8,7 +8,7 @@ def main():
     pygame.display.init()
     pygame.font.init()
     dr = Director()
-    scene = SceneHome(dr, "director.py")
+    scene = SceneHome(dr, "my_scenes.py")
     dr.change_scene(scene)
     dr.loop()
 
